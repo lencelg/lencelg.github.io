@@ -129,49 +129,100 @@
 </header>
 
   <main class="flex-1 w-full max-w-wide mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-    <div class="max-w-content mx-auto">
-  <h1 class="font-heading text-3xl sm:text-4xl font-medium mb-10">
-    Archives
-  </h1>
-
-  
-  <div id="pretext-archive-flow" data-enable="true" aria-hidden="true"></div>
-<script type="module" src="/js/pretext-archive.js"></script>
-
-  
-
-  
-
-  
-  <section class="mb-10 archive-year" data-year="2026">
-    <h2 class="font-heading text-xl font-medium text-text-secondary dark:text-text-secondary-dark mb-4 tracking-wider">2026</h2>
-    <ul class="space-y-3">
+    <article class="max-w-content mx-auto">
+  <header class="mb-8 sm:mb-12">
+    <div class="flex items-start gap-4">
       
-      <li class="flex items-baseline gap-4">
-        <time class="flex-shrink-0 text-sm text-text-secondary dark:text-text-secondary-dark font-mono tabular-nums" datetime="2026-05-24T16:31:09.000Z">
-          05-25
-        </time>
-        <a href="/2026/05/25/test2/" class="hover:text-accent dark:hover:text-accent-dark transition-colors">
-          test2
-        </a>
-      </li>
       
-      <li class="flex items-baseline gap-4">
-        <time class="flex-shrink-0 text-sm text-text-secondary dark:text-text-secondary-dark font-mono tabular-nums" datetime="2026-05-24T13:38:36.000Z">
-          05-24
-        </time>
-        <a href="/2026/05/24/test/" class="hover:text-accent dark:hover:text-accent-dark transition-colors">
-          test
-        </a>
-      </li>
-      
-    </ul>
-  </section>
-  
-
-  
-
+<div class="pretext-ornament flex-shrink-0 mt-1" aria-hidden="true">
+  <canvas
+    id="pretext-ornament-canvas"
+    width="80"
+    height="56"
+    class="w-[80px] h-[56px]"
+  ></canvas>
+  <noscript>
+    <div class="w-[80px] h-[56px] flex items-center justify-center">
+      <span class="block w-3 h-3 bg-accent dark:bg-accent-dark rotate-45"></span>
+    </div>
+  </noscript>
+  <div id="pretext-ornament-fallback" class="hidden w-[80px] h-[56px] items-center justify-center">
+    <span class="block w-3 h-3 bg-accent dark:bg-accent-dark rotate-45"></span>
+  </div>
 </div>
+<script type="module" src="/js/pretext-ornament.js"></script>
+
+      
+      <div class="flex-1">
+        <h1 class="font-heading text-3xl sm:text-4xl font-medium leading-tight">
+          test2
+        </h1>
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-text-secondary dark:text-text-secondary-dark">
+          <time datetime="2026-05-24T16:31:09.000Z">
+            Posted on 2026-05-25
+          </time>
+          
+          <span>
+            &middot; Updated on 2026-05-25
+          </span>
+          
+          
+          <span>&middot; 22 words</span>
+          
+        </div>
+      </div>
+    </div>
+    
+  </header>
+
+  
+  
+
+
+  
+
+  <div class="prose prose-lg dark:prose-invert max-w-none overflow-x-hidden
+    prose-headings:font-heading prose-headings:font-medium
+    prose-a:text-accent dark:prose-a:text-accent-dark prose-a:no-underline hover:prose-a:underline
+    prose-img:rounded prose-img:mx-auto
+    prose-code:font-mono prose-code:text-sm
+    prose-pre:bg-gray-50 dark:prose-pre:bg-gray-900 prose-pre:rounded-lg
+    prose-blockquote:border-accent dark:prose-blockquote:border-accent-dark
+    prose-blockquote:not-italic">
+    <p>just yet another test</p>
+
+  </div>
+
+  <footer class="mt-12 pt-8 border-t border-border-light dark:border-border-dark">
+    
+    <div class="flex flex-wrap items-center gap-2 mb-6">
+      <span class="text-sm text-text-secondary dark:text-text-secondary-dark">Tags:</span>
+      
+      <a href="/tags/code/" class="inline-block px-2.5 py-0.5 text-xs rounded-full border border-border-light dark:border-border-dark text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark hover:border-accent dark:hover:border-accent-dark transition-colors">
+        #code
+      </a>
+      
+    </div>
+    
+
+    
+
+    <nav class="flex justify-between items-center mt-8">
+      
+      <span></span>
+      
+      
+      <a href="/2026/05/24/test/" class="group flex items-center gap-2 text-sm text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors text-right">
+        <span>Next: test</span>
+        <span>&rarr;</span>
+      </a>
+      
+    </nav>
+  </footer>
+</article>
+
+
+
 
   </main>
   <footer class="w-full border-t border-border-light dark:border-border-dark mt-auto">
