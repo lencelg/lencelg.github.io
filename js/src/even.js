@@ -25,6 +25,7 @@
       this.renderLaTeX();
     }
     this.backToTop();
+    this.theme();
   };
 
   Even.prototype.navbar = function () {
@@ -226,6 +227,51 @@
           }, 100*(index++));     
       })
     }
+  };
+
+  Even.prototype.theme = function () {
+    var html = document.documentElement;
+    var STORAGE_KEY = 'theme';
+    var LIGHT_META = '#f8f5f5';
+    var DARK_META = '#2b2b2b';
+
+    function getPreferredTheme() {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) return stored;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem(STORAGE_KEY, theme);
+      updateMeta(theme);
+    }
+
+    function updateMeta(theme) {
+      var color = theme === 'dark' ? DARK_META : LIGHT_META;
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', color);
+      var ms = document.querySelector('meta[name="msapplication-navbutton-color"]');
+      if (ms) ms.setAttribute('content', color);
+      var apple = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+      if (apple) apple.setAttribute('content', color);
+    }
+
+    // Apply saved or preferred theme
+    setTheme(getPreferredTheme());
+
+    // Listen for OS-level changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    // Toggle button click
+    $('#theme-toggle, #theme-toggle-mobile').click(function () {
+      var current = html.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
   };
 
   Even.prototype.backToTop = function () {
