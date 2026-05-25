@@ -1,291 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-<title>lencelg&#39;s blog</title>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
 
 
-<meta name="author" content="lencelg">
-<meta property="og:type" content="website">
-<meta property="og:title" content="lencelg&#39;s blog">
-<meta property="og:site_name" content="lencelg&#39;s blog">
-
-<link rel="icon" href="/favicon.png" type="image/png">
-<link rel="canonical" href="https://lencelg.github.io/404.html">
-
-<link rel="alternate" href="/atom.xml" title="lencelg&#39;s blog" type="application/atom+xml">
-
-
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;700&family=Noto+Serif+SC:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Website keywords -->
 
 
 
-<link rel="stylesheet" href="/css/style.css">
 
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="lencelg's blog" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://lencelg.github.io/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
 
 
 <script>
-(function(){
-  var t = localStorage.getItem('theme');
-  if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark');
-  }
-})();
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
 </script>
-
-
+  
+  <title>lencelg&#39;s blog</title>
 
 <meta name="generator" content="Hexo 8.1.2"></head>
-<body class="bg-bg-light dark:bg-bg-dark text-text-primary dark:text-text-primary-dark font-body leading-relaxed min-h-screen flex flex-col ">
-  <header class="w-full border-b border-border-light dark:border-border-dark">
-  <nav class="max-w-wide mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-    <a href="/" class="font-heading text-xl font-medium tracking-wide hover:text-accent dark:hover:text-accent-dark transition-colors">
-      lencelg&#39;s blog
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">lencelg&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
     </a>
-    <div class="flex items-center gap-6">
-      <ul class="hidden sm:flex items-center gap-6 text-sm">
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
         
-        <li>
-          <a href="/" class="text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-            Home
-          </a>
-        </li>
         
-        <li>
-          <a href="/archives" class="text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-            Archives
-          </a>
-        </li>
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
         
-        <li>
-          <a href="/tags" class="text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-            Tags
-          </a>
-        </li>
         
-        <li>
-          <a href="/categories" class="text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-            Categories
-          </a>
-        </li>
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
         
-        <li>
-          <a href="/about" class="text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-            About
-          </a>
-        </li>
         
-      </ul>
-      <button id="dark-mode-toggle" class="p-1.5 text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors" aria-label="Toggle dark mode">
-  <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-  <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-</button>
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">lencelg's blog</a>  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/archives/">  
+              
+              
+              Archives  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/tags/">  
+              
+              
+              Tags  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/categories/">  
+              
+              
+              Categories  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
 
-      <button id="mobile-menu-btn" class="sm:hidden p-1 text-text-secondary dark:text-text-secondary-dark" aria-label="Home">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+  
+  
+  
+  <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2026/05/25/test2/">test2</a>
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2026-05-25
+      </span>
+      
+      
+      
     </div>
-  </nav>
-  <div id="mobile-menu" class="sm:hidden hidden border-t border-border-light dark:border-border-dark">
-    <ul class="px-4 py-3 space-y-2">
-      
-      <li>
-        <a href="/" class="block py-1 text-sm text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-          Home
-        </a>
-      </li>
-      
-      <li>
-        <a href="/archives" class="block py-1 text-sm text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-          Archives
-        </a>
-      </li>
-      
-      <li>
-        <a href="/tags" class="block py-1 text-sm text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-          Tags
-        </a>
-      </li>
-      
-      <li>
-        <a href="/categories" class="block py-1 text-sm text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-          Categories
-        </a>
-      </li>
-      
-      <li>
-        <a href="/about" class="block py-1 text-sm text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-          About
-        </a>
-      </li>
-      
-    </ul>
+  </header>
+
+  
+
+  <div class="post-content">
+    
+    
+    
+
+    
+    <p>just yet another test</p>
+
+    
+    
   </div>
-</header>
 
-  <main class="flex-1 w-full max-w-wide mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-    
-<div class="max-w-wide mx-auto">
-  <div class="flex flex-col lg:flex-row lg:gap-6">
-    
-    
-    <div class="order-first lg:order-last lg:flex-1 flex items-center justify-center">
+  
+
+  
+
+</article>
+  
+  <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
       
-<div class="w-full h-full relative">
-  <canvas
-    id="pretext-hero-canvas"
-    class="w-full h-full"
-    data-font="16px JetBrains Mono"
-    data-animation="breathe"
-    aria-hidden="true"
-  ></canvas>
-  <noscript>
-    <div class="flex items-center justify-center w-full h-full">
-      <pre class="font-mono text-xs sm:text-sm text-text-primary dark:text-text-primary-dark opacity-70 leading-none">(\(\
-( -.-)
-o_(")(")
-      </pre>
+      <a class="post-link" href="/2026/05/24/test/">test</a>
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2026-05-24
+      </span>
+      
+      
+      
     </div>
-  </noscript>
-  <div id="pretext-hero-fallback" class="hidden items-center justify-center w-full h-full">
-    <pre class="font-mono text-xs sm:text-sm text-text-primary dark:text-text-primary-dark opacity-70 leading-none">(\(\
-( -.-)
-o_(")(")
-    </pre>
+  </header>
+
+  
+
+  <div class="post-content">
+    
+    
+    
+
+    
+    <h1 id="test">Test</h1>
+<p>this a post for testing</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">rm</span> -rf /</span><br></pre></td></tr></table></figure>
+<p><span
+class="math display">ℝ<sup><em>m</em> × <em>n</em></sup></span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;just some random person from internet&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+    
   </div>
-</div>
-<script type="module" src="/js/pretext-hero.js"></script>
 
-    </div>
+  
+
+  
+
+</article>
+  
     
+  <nav class="pagination">  
+      
+      
+  </nav>  
+  
 
-    
-    <div class="flex-shrink-0 lg:w-[50%] py-4">
-      <div class="relative border border-dashed border-border-light dark:border-border-dark rounded-sm">
-        
-        <div class="absolute -top-3 left-4 px-2 bg-bg-light dark:bg-bg-dark font-mono text-xs text-text-secondary dark:text-text-secondary-dark">
-          &#x250C;&#x2500; recent posts &#x2500;&#x2510;
+  
+</section>
         </div>
+          
 
-        <div class="px-5 pt-6 pb-4">
-          <ul class="space-y-0">
-            
-            <li class="group">
-              <a href="/2026/05/25/test2/" class="block py-3 border-b border-dotted border-border-light dark:border-border-dark hover:border-accent dark:hover:border-accent-dark transition-colors">
-                <div class="flex items-start gap-2.5">
-                  <span class="font-mono text-xs text-text-secondary dark:text-text-secondary-dark mt-0.5 flex-shrink-0 group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">&gt;</span>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-0.5">
-                      <time class="font-mono text-[11px] text-text-secondary dark:text-text-secondary-dark tabular-nums flex-shrink-0" datetime="2026-05-24T16:31:09.000Z">
-                        2026-05-25
-                      </time>
-                      <span class="font-mono text-[11px] text-text-secondary dark:text-text-secondary-dark opacity-40">&#x2502;</span>
-                      
-                    </div>
-                    <h2 class="text-sm font-medium leading-snug group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">
-                      test2
-                    </h2>
-                    
-                    
-                    <div class="mt-0.5 flex flex-wrap gap-1.5">
-                      
-                      <span class="font-mono text-[10px] text-text-secondary dark:text-text-secondary-dark opacity-50">#code</span>
-                      
-                    </div>
-                    
-                  </div>
-                </div>
-              </a>
-            </li>
-            
-            <li class="group">
-              <a href="/2026/05/24/test/" class="block py-3  hover:border-accent dark:hover:border-accent-dark transition-colors">
-                <div class="flex items-start gap-2.5">
-                  <span class="font-mono text-xs text-text-secondary dark:text-text-secondary-dark mt-0.5 flex-shrink-0 group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">&gt;</span>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-0.5">
-                      <time class="font-mono text-[11px] text-text-secondary dark:text-text-secondary-dark tabular-nums flex-shrink-0" datetime="2026-05-24T13:38:36.000Z">
-                        2026-05-24
-                      </time>
-                      <span class="font-mono text-[11px] text-text-secondary dark:text-text-secondary-dark opacity-40">&#x2502;</span>
-                      
-                    </div>
-                    <h2 class="text-sm font-medium leading-snug group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">
-                      test
-                    </h2>
-                    
-                    
-                    <div class="mt-0.5 flex flex-wrap gap-1.5">
-                      
-                      <span class="font-mono text-[10px] text-text-secondary dark:text-text-secondary-dark opacity-50">#test</span>
-                      
-                    </div>
-                    
-                  </div>
-                </div>
-              </a>
-            </li>
-            
-          </ul>
-
-          <div class="mt-4 pt-3 border-t border-dashed border-border-light dark:border-border-dark">
-            <a href="/archives" class="inline-flex items-center gap-2 font-mono text-[11px] text-text-secondary dark:text-text-secondary-dark hover:text-accent dark:hover:text-accent-dark transition-colors">
-              <span>&gt;</span>
-              <span>view all archives &rarr;</span>
-            </a>
-          </div>
-        </div>
-
-        
-        <div class="absolute -bottom-3 right-4 px-2 bg-bg-light dark:bg-bg-dark font-mono text-xs text-text-secondary dark:text-text-secondary-dark">
-          &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
-        </div>
       </div>
-    </div>
-  </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:2223544759@qq.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/lencelg" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
 </div>
 
-  </main>
-  <footer class="w-full border-t border-border-light dark:border-border-dark mt-auto">
-  <div class="max-w-wide mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-text-secondary dark:text-text-secondary-dark">
-    <p>
-      &copy; 2026 lencelg
-    </p>
-    <p class="mt-1">
-      Powered by <a href="https://hexo.io" class="hover:text-accent dark:hover:text-accent-dark transition-colors" target="_blank" rel="noopener">Hexo</a>
-      &middot;
-      Theme <a href="https://github.com/hexo-theme-pretext" class="hover:text-accent dark:hover:text-accent-dark transition-colors" target="_blank" rel="noopener">Pretext</a>
-    </p>
-    
-    <div class="mt-4 flex items-center justify-center gap-4">
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+  <span class="division">|</span>
+  <span class="hosting-info">
+    footer.hosting
+  </span>
+
+  <span class="copyright-year">
+    <span>
       
-      <a href="https://github.com/lencelg" class="hover:text-accent dark:hover:text-accent-dark transition-colors" target="_blank" rel="noopener" aria-label="GitHub">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      </a>
+      &copy;
       
-      
-      
-      <a href="mailto:2223544759@qq.com" class="hover:text-accent dark:hover:text-accent-dark transition-colors" aria-label="Email">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-      </a>
-      
-    </div>
-    
+      2026      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">lencelg</span>
+  </span>
+
+</div>
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
   </div>
-</footer>
+    
 
   
-  <button id="back-to-top" class="fixed bottom-6 right-6 w-10 h-10 bg-accent dark:bg-accent-dark text-white rounded-full opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center hover:opacity-90 z-50" aria-label="Back to top">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
-  </button>
-  
-  
-<script src="/js/main.js"></script>
 
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
 </body>
+
 </html>
