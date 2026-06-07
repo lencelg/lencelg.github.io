@@ -22,8 +22,12 @@
 
 <!-- Website description -->
 
+<meta name="description" content="java cross-platform breif introduction" />
+
 
 <!-- Website keywords -->
+
+<meta name="keywords" content="java, jvm, lencelg&#39;s blog" />
 
 
 
@@ -39,7 +43,7 @@
 
 
 <!-- Canonical, good for google search engine -->
-<link rel="canonical" href="https://lencelg.github.io/" />
+<link rel="canonical" href="https://lencelg.github.io/2026/06/07/java-cross-platform-breif-introduction/" />
 
 <!-- Fancybox styling -->
 
@@ -67,7 +71,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
 </script>
   
-  <title>lencelg&#39;s blog</title>
+  <title>java cross-platform breif introduction - lencelg&#39;s blog</title>
 
 <meta name="generator" content="Hexo 8.1.2"></head>
 
@@ -219,15 +223,11 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <section id="posts" class="posts">
-  
-  
-  
-  <article class="post">
+          <article class="post">
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/2026/06/07/java-cross-platform-breif-introduction/">java cross-platform breif introduction</a>
+      java cross-platform breif introduction
       
     </h1>
 
@@ -242,12 +242,17 @@
   </header>
 
   
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#introduction"><span class="toc-number">1.</span> <span class="toc-text">introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%A0%88%E7%9A%84%E6%8C%87%E4%BB%A4%E9%9B%86%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">基于栈的指令集架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%AF%84%E5%AD%98%E5%99%A8%E7%9A%84%E6%8C%87%E4%BB%A4%E7%BA%A7%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">基于寄存器的指令级架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E6%9E%B6%E6%9E%84%E7%9A%84%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">两种架构的举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jvm%E6%9E%B6%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text">JVM架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6.class"><span class="toc-number">1.5.</span> <span class="toc-text">字节码文件（.class）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%95%B00xcafebabe"><span class="toc-number">1.5.1.</span> <span class="toc-text">魔数：0xCAFEBABE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">1.5.2.</span> <span class="toc-text">版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-number">1.5.3.</span> <span class="toc-text">常量池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%8E%E5%AD%97%E8%8A%82%E7%A0%81"><span class="toc-number">1.5.4.</span> <span class="toc-text">方法与字节码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4"><span class="toc-number">1.6.</span> <span class="toc-text">字节码指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E5%89%8D%E7%BC%80"><span class="toc-number">1.6.1.</span> <span class="toc-text">类型前缀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E5%88%86%E7%B1%BB"><span class="toc-number">1.6.2.</span> <span class="toc-text">指令分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.7.</span> <span class="toc-text">设计原因</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jvm-%E5%B7%A5%E4%BD%9C%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">JVM 工作示例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E9%98%B6%E6%AE%B5%E6%8A%8A%E5%AD%97%E8%8A%82%E7%A0%81%E8%AF%B7%E8%BF%9B-jvm"><span class="toc-number">2.1.</span> <span class="toc-text">类加载阶段：把字节码请进 JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDloading"><span class="toc-number">2.1.1.</span> <span class="toc-text">加载（Loading）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5linking"><span class="toc-number">2.1.2.</span> <span class="toc-text">链接（Linking）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96initialization"><span class="toc-number">2.1.3.</span> <span class="toc-text">初始化（Initialization）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">2.2.</span> <span class="toc-text">运行时数据区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="toc-number">2.3.</span> <span class="toc-text">执行引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8interpreter"><span class="toc-number">2.3.1.</span> <span class="toc-text">解释器（Interpreter）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jit-%E7%BC%96%E8%AF%91%E5%99%A8just-in-time-compiler"><span class="toc-number">2.3.2.</span> <span class="toc-text">JIT 编译器（Just-In-Time
+Compiler）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8garbage-collector"><span class="toc-number">2.3.3.</span> <span class="toc-text">垃圾回收器（Garbage
+Collector）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3jni%E8%B0%83%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%BA%95%E5%B1%82"><span class="toc-number">2.4.</span> <span class="toc-text">本地方法接口（JNI）：调用系统底层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jvm-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.5.</span> <span class="toc-text">JVM 生命周期</span></a></li></ol></li></ol>
+    </div>
+  </div>
+  
 
   <div class="post-content">
-    
-    
-    
-
     
     <blockquote>
 <p>[!NOTE] this post is generated with the help of llm, just for a brief
@@ -671,70 +676,67 @@ JIT
 </div>
 
     
-    
   </div>
 
   
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://lencelg.github.io">lencelg</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://lencelg.github.io/2026/06/07/java-cross-platform-breif-introduction/">https://lencelg.github.io/2026/06/07/java-cross-platform-breif-introduction/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
 
   
 
-</article>
   
-  <article class="post">
-  <header class="post-header">
-    <h1 class="post-title">
+  <footer class="post-footer">
+    
+    <div class="post-tags">
       
-      <a class="post-link" href="/2026/05/25/record/">record</a>
+      <a href="/tags/java/">java</a>
       
-    </h1>
-
-    <div class="post-meta">
-      <span class="post-time">
-        2026-05-25
-      </span>
-      
-      
-      <span class="post-category">
-        
-        <a href="/categories/record/">record</a>
-        
-      </span>
-      
+      <a href="/tags/jvm/">jvm</a>
       
     </div>
-  </header>
-
-  
-
-  <div class="post-content">
     
-    
-    
-
-    
-    <p>this is the first post only for recording the start of this blog</p>
-
-    
-    
-  </div>
-
-  
-
-  
-
-</article>
-  
-    
-  <nav class="pagination">  
       
+  <nav class="post-nav">  
+      
+      
+      <a class="next" href="/2026/05/25/record/">  
+        <span class="next-text nav-default">record</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
       
   </nav>  
   
 
+  </footer>
   
-</section>
+
+</article>
         </div>
           
+  <div class="comments" id="comments">  
+      
+      <div id="gitalk-container"></div>  
+      
+  </div>  
+  
 
       </div>
     </main>
@@ -830,6 +832,39 @@ JIT
     <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
   </div>
     
+    
+    
+    
+  
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css" />
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'Ov23liirayUZ4RMeigzQ',
+    clientSecret: 'd512a8e797957c1a37fe508adfa5a9feb1669fd5',
+    repo: 'lencelg.github.io',
+    owner: 'lencelg',
+    admin: ['lencelg'],
+    id: md5(location.pathname),
+    
+    language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+    
+    
+  
 
   
 
