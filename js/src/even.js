@@ -24,6 +24,10 @@
     if(this.config.latex) {
       this.renderLaTeX();
     }
+    this.gfmAlerts();
+    this.fixLists();
+    this.copyCode();
+    this.scrollProgress();
     this.backToTop();
     this.theme();
   };
@@ -67,66 +71,169 @@
   Even.prototype.scrollToc = function () {
     var SPACING = 20;
     var $toc = $('.post-toc');
+    var $container = $('.container');
+    var $tocContent = $('.post-toc-content');
     var $footer = $('.post-footer');
 
-    if ($toc.length) {
-      var minScrollTop = $toc.offset().top - SPACING;
-      $(window).scroll(function () {
-        var tocState = {
-          start: {
-            'position': 'absolute',
-            'top': minScrollTop
-          },
-          process: {
-            'position': 'fixed',
-            'top': SPACING
+    if (!$toc.length) return;
+
+    // Detect if .container has backdrop-filter (which makes it the containing block for fixed)
+    // Note: getComputedStyle may return empty string '' when not set, so check both '' and 'none'
+    var containerStyle = getComputedStyle($container[0]);
+    var bf = containerStyle.backdropFilter || containerStyle.webkitBackdropFilter || '';
+    var hasBackdropFilter = bf !== '' && bf !== 'none';
+
+    // Store whether we've captured the fixed left position
+    var fixedLeft = null;
+    var tocMarginLeft = parseFloat($toc.css('marginLeft'));
+    var initialTop = $toc.offset().top - SPACING;
+
+    // Recalculate fixedLeft on window resize to keep TOC aligned
+    $(window).on('resize', function () {
+      if ($toc.css('display') === 'none') return;
+      if (fixedLeft === null && $(window).scrollTop() >= initialTop) {
+        // In fixed mode but left not captured yet → capture now
+        fixedLeft = $toc[0].getBoundingClientRect().left;
+      }
+      if (fixedLeft !== null) {
+        // Recompute from current container position
+        var cLeft = $container[0].getBoundingClientRect().left;
+        fixedLeft = hasBackdropFilter ? tocMarginLeft : cLeft + tocMarginLeft;
+        $toc.css({ 'left': fixedLeft });
+      }
+    });
+
+    $(window).scroll(function () {
+      if ($toc.css('display') === 'none') return;
+
+      var scrollTop = $(window).scrollTop();
+      var $active = $('.toc-link.active');
+
+      // --- TOC always visible on the right side ---
+      if (scrollTop < initialTop) {
+        // Back to top → restore absolute positioning
+        $toc.css({ 'position': 'absolute', 'top': initialTop, 'left': '', 'marginLeft': tocMarginLeft });
+        fixedLeft = null; // reset so we re-capture on next switch
+      } else {
+        // Switching from absolute → fixed? Capture the exact rendered left position
+        if (fixedLeft === null) {
+          var renderLeft = $toc[0].getBoundingClientRect().left;
+          if (hasBackdropFilter) {
+            // backdrop-filter makes .container the containing block,
+            // so left is relative to .container, not viewport
+            var containerLeft = $container[0].getBoundingClientRect().left;
+            fixedLeft = renderLeft - containerLeft;
+          } else {
+            fixedLeft = renderLeft;
           }
         }
-        var scrollTop = $(window).scrollTop();
-        if (scrollTop < minScrollTop) {
-          $toc.css(tocState.start);
-        } else {
-          $toc.css(tocState.process);
-          
-          if($(".post-toc").css("display") != "none"){
-            var maxTocTop = $footer.offset().top - $toc.height() - SPACING;
-            var tocCenterThreshold = document.documentElement.scrollTop + window.innerHeight / 2;
-            if ($(".toc-link.active").offset() != undefined && $(".toc-link.active").offset().top > tocCenterThreshold) {
-              var distanceBetween = $(".post-toc").offset().top - $(".toc-link.active").offset().top;
-              $(".post-toc").offset({
-                  top: Math.min(maxTocTop, tocCenterThreshold + distanceBetween),
-              });
-            }
-            if (maxTocTop < $(".post-toc").offset().top) {
-              $(".post-toc").offset({ top: maxTocTop });
-            }
+
+        var footerTop = $footer.offset().top;
+        var tocHeight = $toc.outerHeight();
+
+        var tocLeft = fixedLeft;
+
+        // TOC top: prevent overlapping footer
+        var tocBottomIfFixed = SPACING + tocHeight;
+        var footerTopInView = footerTop - scrollTop;
+
+        var tocTop = SPACING;
+        if (tocBottomIfFixed > footerTopInView) {
+          tocTop = footerTopInView - tocHeight;
+          if (tocTop < -tocHeight + 80) {
+            tocTop = -tocHeight + 80;
           }
         }
-      })
-    }
+
+        $toc.css({ 'position': 'fixed', 'top': tocTop, 'left': tocLeft, 'marginLeft': 0 });
+      }
+
+      // --- Auto-scroll TOC content to keep active link visible ---
+      if ($active.length && $tocContent.length) {
+        var contentEl = $tocContent[0];
+        var activeEl = $active[0];
+        var contentRect = contentEl.getBoundingClientRect();
+        var activeRect = activeEl.getBoundingClientRect();
+
+        if (activeRect.top < contentRect.top + 5) {
+          contentEl.scrollTop -= (contentRect.top - activeRect.top + 10);
+        } else if (activeRect.bottom > contentRect.bottom - 5) {
+          contentEl.scrollTop += (activeRect.bottom - contentRect.bottom + 10);
+        }
+      }
+    });
   };
 
   Even.prototype.tocFollow = function () {
     var HEADERFIX = 30;
-    var $toclink = $('.toc-link'),
-      $headerlink = $('.headerlink');
+    var $toclink = $('.toc-link');
+    if (!$toclink.length) return;
+
+    // Build a map of toc-link -> heading element (by id from href)
+    var headings = [];
+    $toclink.each(function () {
+      var href = $(this).attr('href');
+      if (href && href.charAt(0) === '#') {
+        // Decode URL-encoded ID (e.g., %E5%9F%BA -> 基)
+        var id = decodeURIComponent(href.substring(1));
+        var el = document.getElementById(id);
+        if (el) {
+          headings.push({ el: $(el), link: $(this) });
+        } else {
+          headings.push(null);
+        }
+      } else {
+        headings.push(null);
+      }
+    });
+
+    // Filter out only valid heading entries
+    var validHeadings = [];
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i]) {
+        validHeadings.push(headings[i]);
+      }
+    }
+
+    if (!validHeadings.length) return;
+
+    // Smooth scroll on TOC link click
+    $toclink.on('click', function (e) {
+      e.preventDefault();
+      var href = $(this).attr('href');
+      if (href && href.charAt(0) === '#') {
+        var id = decodeURIComponent(href.substring(1));
+        var target = document.getElementById(id);
+        if (target) {
+          var top = $(target).offset().top - HEADERFIX;
+          $('html, body').animate({ scrollTop: top }, 400);
+        }
+      }
+    });
 
     $(window).scroll(function () {
-      var headerlinkTop = $.map($headerlink, function (link) {
-        return $(link).offset().top;
-      });
       var scrollTop = $(window).scrollTop();
+      var activeIndex = -1;
 
-      for (var i = 0; i < $toclink.length; i++) {
-        var isLastOne = i + 1 === $toclink.length,
-          currentTop = headerlinkTop[i] - HEADERFIX,
-          nextTop = isLastOne ? Infinity : headerlinkTop[i + 1] - HEADERFIX;
+      for (var i = 0; i < validHeadings.length; i++) {
+        var headingTop = validHeadings[i].el.offset().top - HEADERFIX;
+        var isLast = i + 1 === validHeadings.length;
+        var nextTop = isLast ? Infinity : validHeadings[i + 1].el.offset().top - HEADERFIX;
 
-        if (currentTop < scrollTop && scrollTop <= nextTop) {
-          $($toclink[i]).addClass('active');
-        } else {
-          $($toclink[i]).removeClass('active');
+        if (scrollTop >= headingTop && scrollTop < nextTop) {
+          activeIndex = i;
+          break;
         }
+        // If scrolled past all headings, activate the last one
+        if (isLast && scrollTop >= headingTop) {
+          activeIndex = i;
+        }
+      }
+
+      // Apply/remove active class
+      $toclink.removeClass('active');
+      if (activeIndex >= 0 && validHeadings[activeIndex]) {
+        validHeadings[activeIndex].link.addClass('active');
       }
     });
   };
@@ -274,6 +381,21 @@
     });
   };
 
+  // Top reading progress bar
+  Even.prototype.scrollProgress = function () {
+    var $bar = $('.scrollPercentage');
+    if (!$bar.length) return;
+
+    $(window).scroll(function () {
+      var scrollTop = $(window).scrollTop();
+      var docHeight = $(document).height() - $(window).height();
+      if (docHeight > 0) {
+        var progress = (scrollTop / docHeight) * 100;
+        $bar.css('width', progress + '%');
+      }
+    });
+  };
+
   Even.prototype.backToTop = function () {
     var $backToTop = $('#back-to-top');
 
@@ -290,7 +412,11 @@
     });
   };
 
+  // LaTeX rendering (MathJax only — KaTeX auto-renders via auto-render.js)
   Even.prototype.renderLaTeX = function () {
+    // Only poll for MathJax if KaTeX is NOT enabled
+    if (this.config.katex && this.config.katex.enable) return;
+
     var loopID = setInterval(function () {
       if(window.MathJax) {
         var jax = window.MathJax;
@@ -299,6 +425,151 @@
         clearInterval(loopID);
       }
     }, 500);
+  }
+
+  // Fix unrendered lists: some markdown renderers don't recognize numbered lists
+  // without a blank line before them, outputting them as a single paragraph instead.
+  // This detects such paragraphs and converts them to proper HTML lists.
+  Even.prototype.fixLists = function () {
+    $('.post-content p').each(function () {
+      var $p = $(this);
+      var html = $p.html();
+
+      // Match numbered items: look for "N." or "N、" or "N．" patterns
+      // Must have at least 2 sequential numbers in the paragraph
+      var numRegex = /(\d+)\s*[.、．]/g;
+      var nums = [];
+      var m;
+      while ((m = numRegex.exec(html)) !== null) {
+        nums.push({ num: parseInt(m[1]), idx: m.index, end: numRegex.lastIndex });
+      }
+
+      if (nums.length < 2) return;
+
+      // Check they're sequential 1,2,3...
+      // Sort by position to ensure left-to-right order
+      nums.sort(function(a, b) { return a.idx - b.idx; });
+      for (var n = 1; n < nums.length; n++) {
+        if (nums[n].num !== nums[n-1].num + 1) return;
+      }
+
+      // Split: use the match positions to break the HTML
+      var items = [];
+      for (var i = 0; i < nums.length; i++) {
+        var startIdx = nums[i].end;
+        var endIdx = i + 1 < nums.length ? nums[i + 1].idx : html.length;
+        items.push(html.substring(startIdx, endIdx).trim());
+      }
+
+      if (items.length < 2) return;
+
+      // Build HTML: leading text (if any) as <p>, then the <ol>
+      var leadingText = html.substring(0, nums[0].idx).trim();
+      var listHtml = '';
+      if (leadingText) {
+        listHtml += '<p>' + leadingText + '</p>\n';
+      }
+      listHtml += '<ol>\n';
+      for (var j = 0; j < items.length; j++) {
+        listHtml += '<li>' + items[j] + '</li>\n';
+      }
+      listHtml += '</ol>';
+
+      $p.replaceWith(listHtml);
+    });
+  }
+
+  // Copy code button for code blocks
+  Even.prototype.copyCode = function () {
+    $('.highlight').each(function () {
+      var $block = $(this);
+      var $btn = $('<button class="copy-btn" title="Copy code">Copy</button>');
+      $block.append($btn);
+
+      $btn.on('click', function () {
+        // Get code content preserving line breaks
+        var $codePre = $block.find('.code pre');
+        var code = '';
+        if ($codePre.length) {
+          // Clone to avoid modifying the DOM, replace <br> with \n
+          var $clone = $codePre.clone();
+          $clone.find('br').replaceWith('\n');
+          code = $clone.text();
+        }
+        if (!code) {
+          // Fallback: get from the whole block
+          var $fallback = $block.find('pre').last().clone();
+          $fallback.find('br').replaceWith('\n');
+          code = $fallback.text();
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(function () {
+            $btn.text('Copied!');
+            setTimeout(function () { $btn.text('Copy'); }, 2000);
+          }).catch(function () {
+            fallbackCopy(code, $btn);
+          });
+        } else {
+          fallbackCopy(code, $btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, $btn) {
+      var $textarea = $('<textarea>');
+      $textarea.val(text);
+      $textarea.css({ position: 'fixed', opacity: 0, left: '-9999px' });
+      $('body').append($textarea);
+      $textarea.select();
+      try {
+        document.execCommand('copy');
+        $btn.text('Copied!');
+        setTimeout(function () { $btn.text('Copy'); }, 2000);
+      } catch (e) {
+        $btn.text('复制失败');
+      }
+      $textarea.remove();
+    }
+  }
+
+  // GFM-style alerts: transform > [!NOTE], > [!TIP], > [!WARNING], etc.
+  // Matches Markdown Preview Enhanced rendering style
+  Even.prototype.gfmAlerts = function () {
+    var alertTypes = {
+      'note':      { title: 'Note' },
+      'tip':       { title: 'Tip' },
+      'important': { title: 'Important' },
+      'warning':   { title: 'Warning' },
+      'caution':   { title: 'Caution' }
+    };
+
+    $('.post-content blockquote').each(function () {
+      var $blockquote = $(this);
+      var $firstP = $blockquote.find('p').first();
+      if (!$firstP.length) return;
+
+      var text = $firstP.text().trim();
+      var match = text.match(/^\[!(\w+)\]/i);
+      if (!match) return;
+
+      var type = match[1].toLowerCase();
+      var alertInfo = alertTypes[type];
+      if (!alertInfo) return;
+
+      // Remove the [!NOTE] text from the first paragraph
+      $firstP.html($firstP.html().replace(/^\[!\w+\]\s*/i, ''));
+
+      // If first paragraph is now empty, remove it
+      if ($firstP.text().trim() === '') {
+        $firstP.remove();
+      }
+
+      // Create the alert structure
+      var $title = $('<p>').addClass('markdown-alert-title').text(alertInfo.title);
+      $blockquote.prepend($title);
+      $blockquote.addClass('markdown-alert markdown-alert-' + type);
+    });
   }
 
   var config = window.config;

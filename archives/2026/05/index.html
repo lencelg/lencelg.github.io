@@ -46,7 +46,19 @@
 <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
 
 
-<!-- MathJax (LaTeX) support -->
+<!-- KaTeX support (used by Markdown Preview Enhanced) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false},{left: '\\[', right: '\\]', display: true}]});"></script>
+
+
+
+<!-- Mermaid diagram support (used by Markdown Preview Enhanced) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.css" />
 
 
 <!-- Theme styling -->
@@ -64,7 +76,7 @@
 
 
 <script>
-  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":true,"katex":{"enable":true,"autoRender":true},"mermaid":{"enable":true,"theme":"default"}};
 </script>
   
   <title>Archives - 2026/5 · lencelg&#39;s blog</title>
@@ -384,6 +396,20 @@
 
 <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
 
+
+
+<!-- Mermaid diagram support -->
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true },
+    sequence: { useMaxWidth: true },
+    gantt: { useMaxWidth: true }
+  });
+</script>
 
 
   <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>

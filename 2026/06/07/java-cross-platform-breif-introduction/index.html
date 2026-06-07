@@ -50,7 +50,19 @@
 <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
 
 
-<!-- MathJax (LaTeX) support -->
+<!-- KaTeX support (used by Markdown Preview Enhanced) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false},{left: '\\[', right: '\\]', display: true}]});"></script>
+
+
+
+<!-- Mermaid diagram support (used by Markdown Preview Enhanced) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.css" />
 
 
 <!-- Theme styling -->
@@ -68,7 +80,7 @@
 
 
 <script>
-  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":false};
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":true,"katex":{"enable":true,"autoRender":true},"mermaid":{"enable":true,"theme":"default"}};
 </script>
   
   <title>java cross-platform breif introduction - lencelg&#39;s blog</title>
@@ -237,6 +249,12 @@
       </span>
       
       
+      <span class="post-category">
+        
+        <a href="/categories/jvm/">jvm</a>
+        
+      </span>
+      
       
     </div>
   </header>
@@ -255,7 +273,8 @@ Collector）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class=
   <div class="post-content">
     
     <blockquote>
-<p>[!NOTE] this post is generated with the help of llm, just for a brief
+<p>[!NOTE]</p>
+<p>this post is generated with the help of llm, just for a brief
 unstanding of java cross-platform implementation</p>
 </blockquote>
 <h1 id="introduction">introduction</h1>
@@ -286,7 +305,7 @@ DevelopmentKit），JDK是用于支持Java程序开发的最小环境</p>
 <p>2个指令</p>
 <h2 id="jvm架构">JVM架构</h2>
 <p>架构一览</p>
-<p><img src="../img/jvm/class%20loader.jpeg" /></p>
+<p><img src="/img/jvm/class%20loader.jpeg" /></p>
 <p><strong>由于跨平台性的设计，Java的指令都是根据栈来设计的</strong>。不同平台CPU架构不同，所以不能设计为基于寄存器的。</p>
 <p>因为基于栈的架构跨平台性好、指令集小，虽然相对于基于寄存器的架构来说，基于栈的架构编译得到的指令更多，执行性能也不如基于寄存器的架构好，但考虑到其跨平台性与移植性，java还是选用栈的架构</p>
 <p>具体JVM的内存结构，其实取决于其实现，不同厂商的JVM，或者同一厂商发布的不同版本，都有可能存在一定差异。主要以Oracle
@@ -884,6 +903,20 @@ JIT
 
 <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
 
+
+
+<!-- Mermaid diagram support -->
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true },
+    sequence: { useMaxWidth: true },
+    gantt: { useMaxWidth: true }
+  });
+</script>
 
 
   <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
