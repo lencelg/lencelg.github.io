@@ -24,6 +24,7 @@
     if(this.config.latex) {
       this.renderLaTeX();
     }
+    this.renderMarkdown();
     this.gfmAlerts();
     this.fixLists();
     this.copyCode();
@@ -478,6 +479,172 @@
       $p.replaceWith(listHtml);
     });
   }
+
+  // Markdown rendering for post content
+  // Only runs when Hexo's renderer clearly did NOT process the content
+  // (i.e., content is raw text with markdown syntax visible)
+  Even.prototype.renderMarkdown = function () {
+    var self = this;
+    var $content = $('.post-content');
+    if (!$content.length) return;
+
+    var html = $content.html();
+    if (!html) return;
+
+    // Count significant HTML elements — if there are many, the content
+    // was already rendered by Hexo's markdown engine, leave it alone.
+    var tagCount = (html.match(/<\/(p|ul|ol|li|h[1-6]|blockquote|pre|code|strong|em|a|img|table)\b/gi) || []).length;
+    if (tagCount >= 3) return;
+
+    // Check the TEXT content for visible markdown syntax
+    var text = $content.text();
+    var hasMarkdown = false;
+    hasMarkdown = hasMarkdown || /\*{2}[^*]+\*{2}/.test(text);   // **bold**
+    hasMarkdown = hasMarkdown || /`[^`\n]+`/.test(text);          // `code`
+    hasMarkdown = hasMarkdown || /^[-*]\s/m.test(text);           // - list
+    hasMarkdown = hasMarkdown || /^\d+[.、．]\s/m.test(text);     // 1. list
+    hasMarkdown = hasMarkdown || /^#{1,6}\s/m.test(text);         // # heading
+
+    if (!hasMarkdown) return;
+
+    // Content is raw markdown — convert it to HTML
+    var processed = self._processMarkdown(text);
+    if (processed && processed.length > 10) {
+      $content.html(processed);
+    }
+  };
+
+  // Process full markdown text to HTML
+  Even.prototype._processMarkdown = function (text) {
+    var self = this;
+    var lines = text.split('\n');
+    var result = [];
+    var i = 0;
+
+    while (i < lines.length) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      // Skip completely empty lines
+      if (!trimmed) { i++; continue; }
+
+      // --- Unordered list ---
+      if (trimmed.match(/^[-*]\s/)) {
+        var items = [];
+        while (i < lines.length) {
+          var m = lines[i].trim().match(/^[-*]\s+(.*)/);
+          if (!m) {
+            // Allow indented continuation line
+            var nt = lines[i].trim();
+            if (nt && !nt.match(/^[-*\d#>]/) && items.length > 0) {
+              items[items.length - 1] += ' ' + self._processInlineMarkdown(nt);
+              i++; continue;
+            }
+            break;
+          }
+          items.push(self._processInlineMarkdown(m[1]));
+          i++;
+        }
+        if (items.length > 0) {
+          result.push('<ul>\n<li>' + items.join('</li>\n<li>') + '</li>\n</ul>');
+        }
+        continue;
+      }
+
+      // --- Ordered list ---
+      if (trimmed.match(/^\d+[.、．]\s/)) {
+        var olItems = [];
+        while (i < lines.length) {
+          var om = lines[i].trim().match(/^(\d+)[.、．]\s+(.*)/);
+          if (!om) {
+            var nt2 = lines[i].trim();
+            if (nt2 && !nt2.match(/^[-*\d#>]/) && olItems.length > 0) {
+              olItems[olItems.length - 1] += ' ' + self._processInlineMarkdown(nt2);
+              i++; continue;
+            }
+            break;
+          }
+          olItems.push(self._processInlineMarkdown(om[2]));
+          i++;
+        }
+        if (olItems.length > 0) {
+          result.push('<ol>\n<li>' + olItems.join('</li>\n<li>') + '</li>\n</ol>');
+        }
+        continue;
+      }
+
+      // --- Heading ---
+      var headingMatch = trimmed.match(/^(#{1,6})\s+(.*)/);
+      if (headingMatch) {
+        var level = headingMatch[1].length;
+        result.push('<h' + level + '>' + self._processInlineMarkdown(headingMatch[2]) + '</h' + level + '>');
+        i++; continue;
+      }
+
+      // --- Blockquote ---
+      var bqMatch = trimmed.match(/^>\s?(.*)/);
+      if (bqMatch) {
+        var bqLines = [];
+        while (i < lines.length) {
+          var bqm = lines[i].trim().match(/^>\s?(.*)/);
+          if (!bqm) break;
+          bqLines.push(bqm[1]);
+          i++;
+        }
+        var bqHtml = self._processMarkdown(bqLines.join('\n'));
+        result.push('<blockquote>\n' + bqHtml + '\n</blockquote>');
+        continue;
+      }
+
+      // --- Regular paragraph ---
+      var paraLines = [];
+      while (i < lines.length) {
+        var nl = lines[i];
+        var nt3 = nl.trim();
+        if (!nt3) break;
+        if (nt3.match(/^[-*]\s/)) break;
+        if (nt3.match(/^\d+[.、．]\s/)) break;
+        if (nt3.match(/^#{1,6}\s/)) break;
+        if (nt3.match(/^>\s?/)) break;
+        paraLines.push(nl);
+        i++;
+      }
+      if (paraLines.length > 0) {
+        result.push('<p>' + self._processInlineMarkdown(paraLines.join(' ').trim()) + '</p>');
+      } else {
+        i++;
+      }
+    }
+
+    return result.join('\n');
+  };
+
+  // Process inline markdown: bold, italic, code, links, images
+  Even.prototype._processInlineMarkdown = function (text) {
+    if (!text) return '';
+
+    // First, protect any existing HTML-like entities
+    // Then apply markdown rules
+
+    // Inline code: `code` (process first, before bold/italic)
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // Bold: **text** or __text__
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+
+    // Italic: *text* or _text_
+    text = text.replace(/(\W|^)\*([^*]+)\*(\W|$)/g, '$1<em>$2</em>$3');
+    text = text.replace(/(\W|^)_([^_]+)_(\W|$)/g, '$1<em>$2</em>$3');
+
+    // Images: ![alt](url)
+    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+
+    // Links: [text](url)
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+    return text;
+  };
 
   // Copy code button for code blocks
   Even.prototype.copyCode = function () {

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>
+    (function(){var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+    document.documentElement.setAttribute('data-theme',t);})();
+  </script>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5f5" />
+<meta name="msapplication-navbutton-color" content="#f8f5f5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5f5">
+
+<!-- Website description -->
+
+<meta name="description" content="cpp stl note (2)" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="cpp, stl, lencelg&#39;s blog" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="lencelg's blog" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=3.0.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="https://lencelg.github.io/2026/06/09/cpp-stl-note-2/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- KaTeX support (used by Markdown Preview Enhanced) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false},{left: '\\[', right: '\\]', display: true}]});"></script>
+
+
+
+<!-- Mermaid diagram support (used by Markdown Preview Enhanced) -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.css" />
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=3.0.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":true,"katex":{"enable":true,"autoRender":true},"mermaid":{"enable":true,"theme":"default"}};
+</script>
+  
+  <title>cpp stl note (2) - lencelg&#39;s blog</title>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">lencelg&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <button id="theme-toggle-mobile" class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">lencelg's blog</a>  
+</div>  
+  
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            
+            
+              Tags
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            
+            
+              About
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      cpp stl note (2)
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2026-06-09
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/categories/cpp-stl/">cpp stl</a>
+        
+      </span>
+      
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#architecture-source"><span class="toc-number">1.</span> <span class="toc-text">architecture &amp; source</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#operator-overloading"><span class="toc-number">1.1.</span> <span class="toc-text">Operator Overloading</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#allocator"><span class="toc-number">2.</span> <span class="toc-text">allocator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iterator"><span class="toc-number">3.</span> <span class="toc-text">Iterator</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h1 id="architecture-source">architecture &amp; source</h1>
+<ol type="1">
+<li>OOP(Object-Oriented-programming) 企图将 datas 和 methods
+关联在一起</li>
+<li>GP(Generic programming) 是将 datas 和 methods 分开来</li>
+</ol>
+<p>STL 是 GP 的思想</p>
+<blockquote>
+<p>所有 algorithms，其内最终涉及元素本身的操作，无非就是比大小。</p>
+</blockquote>
+<p>于是要学习操作重载和模板</p>
+<h2 id="operator-overloading">Operator Overloading</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Expression</th>
+<th>As member function</th>
+<th>As non-member function</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="citation" data-cites="a">@a</span></td>
+<td>(a).operator@()</td>
+<td>operator@ (a)</td>
+<td>!std::cin calls std::cin.operator!()</td>
+</tr>
+<tr>
+<td>a@b</td>
+<td>(a).operator@ (b)</td>
+<td>operator@ (a, b)</td>
+<td>std::cout &lt;&lt; 42 calls std::cout.operator&lt;&lt;(42)</td>
+</tr>
+<tr>
+<td>a=b</td>
+<td>(a).operator= (b)</td>
+<td>cannot be non-member</td>
+<td>std::string s; s = “abc”; calls s.operator=“abc”</td>
+</tr>
+<tr>
+<td>a[b]</td>
+<td>(a).operator[](b)</td>
+<td>cannot be non-member</td>
+<td>std::map&lt;int, int&gt; m; m[1] = 2; calls m.operator[](1)</td>
+</tr>
+<tr>
+<td>a-&gt;</td>
+<td>(a).operator-&gt;()</td>
+<td>cannot be non-member</td>
+<td>std::unique_ptr&lt;S&gt; ptr(new S); ptr-&gt;bar() calls
+ptr.operator-&gt;()</td>
+</tr>
+<tr>
+<td>a@</td>
+<td>(a).operator@ (0)</td>
+<td>operator@ (a, 0)</td>
+<td>std::vector&lt;int&gt;::iterator i = v.begin(); i++ calls
+i.operator++(0)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>In this table, @ is a placeholder representing all matching
+operators: all prefix operators in <span class="citation"
+data-cites="a">@a</span>, all postfix operators other than -&gt; in a@,
+all infix operators other than = in a@b</p>
+</blockquote>
+<p>Specialization</p>
+<p>这里的思想和 rust 的<code>trait</code>的思想很像</p>
+<p>泛化指的是定义模板时的<strong>通用</strong>版本（主模板，primary
+template），适用于所有类型。</p>
+<p>特化是指针对<strong>一个或多个特定模板参数</strong>给出专门的实现 -
+全特化（Explicit Specialization）：指定所有模板参数。 - 偏特化（Partial
+Specialization）：只指定部分模板参数（仅限类模板）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">Key</span>&gt; <span class="keyword">struct</span> <span class="title class_">hash</span> &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;  </span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">char</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">char</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">short</span>&gt;() &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">short</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">unsigned</span> <span class="type">short</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">unsigned</span> <span class="type">short</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">int</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">int</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">unsigned</span> <span class="type">int</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">long</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">long</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">unsigned</span> <span class="type">long</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
+<h1 id="allocator">allocator</h1>
+<p>侯捷老师在这里主要讲解了vs6, bc5,
+gnuc2.9(<code>&lt;defalloc.h&gt;</code>)的<code>allocator</code>的实现，底层都是使用<code>malloc()</code>,
+<code>free()</code>实现的， 效果都不太理想</p>
+<p>在典型的c语言的<code>malloc()</code>下内存里面会记录分配的大小，于是<code>free()</code>的时候不需要进行大小指定。</p>
+<p>但是在<code>container</code>的思想下我们知道单个容器的大小，无需再分配的内存里面储存分配的大小</p>
+<p>后面就是介绍了gnuc 2.9 <code>&lt;stl::alloc&gt;</code></p>
+<p><strong>GCC 2.9 STL 分配器
+(<code>std::alloc</code>)</strong>核心要点： -
+<strong>两级配置器</strong>：以 <strong>128 字节</strong> 为界。 -
+<strong>第一级</strong>：大内存（&gt;128B）→ 直接调用
+<code>malloc</code>/<code>free</code>。 -
+<strong>第二级</strong>：小内存（≤128B）→ 内存池 + 自由链表管理。 -
+<strong>自由链表</strong>：16 条链表，负责大小 <strong>8, 16, … , 128
+字节</strong>（8 的倍数）的内存块。 - <strong>无 cookie
+开销</strong>：内存池从系统申请一大块，内部分配的小块无额外头部信息，极大节约内存。
+- <strong>效率高</strong>：避免频繁调用
+<code>malloc</code>，减少碎片。</p>
+<p>GCC 4.9 STL Allocator
+的默认分配器就是<code>malloc()/free()</code>的包装</p>
+<p>GCC 2.9 时代的 <code>std::alloc</code>
+的后继成为了<code>__gnu_cxx::__pool_alloc&lt;T&gt;</code></p>
+<h1 id="iterator">Iterator</h1>
+<p>迭代器通常会定义一些内嵌类型： -
+<code>iterator_category</code>：迭代器类型（如输入、输出、随机访问等）。
+- <code>value_type</code>：元素类型（例如 <code>int</code>）。 -
+<code>difference_type</code>：表示两个迭代器之间距离的类型（通常是
+<code>ptrdiff_t</code>）。 - <code>pointer</code>：指向元素的指针类型。
+- <code>reference</code>：指向元素的引用类型。</p>
+<p><code>iterator_traits</code>
+提供了<strong>统一的访问接口</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">I</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">iterator_traits</span> &#123;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::iterator_category iterator_category;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::value_type value_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::difference_type difference_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::pointer pointer;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::reference reference;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于<strong>自定义迭代器类</strong>（其内部定义了上述类型），<code>iterator_traits&lt;I&gt;</code>
+直接取出这些类型。</li>
+<li>对于<strong>原生指针</strong>（如
+<code>int*</code>），标准库提供了<strong>偏特化版本</strong>：
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">iterator_traits</span>&lt;T*&gt; &#123;</span><br><span class="line">    <span class="keyword">typedef</span> random_access_iterator_tag iterator_category;</span><br><span class="line">    <span class="keyword">typedef</span> T value_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="type">ptrdiff_t</span> difference_type;</span><br><span class="line">    <span class="keyword">typedef</span> T* pointer;</span><br><span class="line">    <span class="keyword">typedef</span> T&amp; reference;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure> 这样，<code>iterator_traits&lt;int*&gt;::value_type</code>
+就是 <code>int</code>，无需指针自己定义类型。</li>
+</ul>
+<p>iterator_category分为五大类 - <strong>输入迭代器 (Input
+Iterator)</strong>：这种迭代器所指的对象，不允许外界改变。只读（read
+only）。 - <strong>输出迭代器 (Output Iterator)</strong>：唯写（write
+only）。 - <strong>前向迭代器 (Forward
+Iterator)</strong>：允许“写入型”算法（例如
+<code>replace()</code>）在此种迭代器所形成的区间上进行读写操作。 -
+<strong>双向迭代器 (Bidirectional
+Iterator)</strong>：可双向移动。某些算法需要逆向走访某个迭代器区间（例如逆向拷贝某范围内的元素），可以使用双向迭代器。
+- <strong>随机访问迭代器 (Random Access
+Iterator)</strong>：前四种迭代器都只供应一部分指针算术能力（前三种支持
+<code>operator++</code>，第四种再加上
+<code>operator--</code>），第五种则涵盖所有指针算术能力，包括
+<code>p+n</code>, <code>p-n</code>, <code>p[n]</code>,
+<code>p1-p2</code>, <code>p1&lt;p2</code>。</p>
+<p>从属关系如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Input Iterator        Output Iterator</span><br><span class="line">    │                      │</span><br><span class="line">    └──────────┬───────────┘</span><br><span class="line">               ▼</span><br><span class="line">        Forward Iterator</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">      Bidirectional Iterator</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">     Random Access Iterator</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="https://lencelg.github.io">lencelg</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="https://lencelg.github.io/2026/06/09/cpp-stl-note-2/">https://lencelg.github.io/2026/06/09/cpp-stl-note-2/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/cpp/">cpp</a>
+      
+      <a href="/tags/stl/">stl</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2026/06/09/cpp-stl-note-3/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">cpp stl note (3)</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2026/06/08/cpp-stl-note-1/">  
+        <span class="next-text nav-default">cpp stl note (1)</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+      <div id="gitalk-container"></div>  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:2223544759@qq.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/lencelg" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/lencelg/hexo-theme-even-enhanced">Even</a>
+  </span>
+  <span class="division">|</span>
+  <span class="hosting-info">
+    footer.hosting
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2026      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">lencelg</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+  
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css" />
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'Ov23liirayUZ4RMeigzQ',
+    clientSecret: 'd512a8e797957c1a37fe508adfa5a9feb1669fd5',
+    repo: 'lencelg.github.io',
+    owner: 'lencelg',
+    admin: ['lencelg'],
+    id: md5(location.pathname),
+    
+    language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+    
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<!-- Mermaid diagram support -->
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true },
+    sequence: { useMaxWidth: true },
+    gantt: { useMaxWidth: true }
+  });
+</script>
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=3.0.0"></script>
+</body>
+
+</html>
