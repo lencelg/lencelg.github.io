@@ -494,7 +494,6 @@
     // Count significant HTML elements — if there are many, the content
     // was already rendered by Hexo's markdown engine, leave it alone.
     var tagCount = (html.match(/<\/(p|ul|ol|li|h[1-6]|blockquote|pre|code|strong|em|a|img|table)\b/gi) || []).length;
-    if (tagCount >= 3) return;
 
     // Check the TEXT content for visible markdown syntax
     var text = $content.text();
@@ -507,11 +506,55 @@
 
     if (!hasMarkdown) return;
 
-    // Content is raw markdown — convert it to HTML
-    var processed = self._processMarkdown(text);
-    if (processed && processed.length > 10) {
-      $content.html(processed);
+    if (tagCount < 3) {
+      // Content is raw markdown — convert the whole thing to HTML
+      var processed = self._processMarkdown(text);
+      if (processed && processed.length > 10) {
+        $content.html(processed);
+      }
+      return;
     }
+
+    // Content has HTML but individual paragraphs may still have
+    // unprocessed inline list patterns like " - item1 - item2 - item3"
+    $content.find('p').each(function () {
+      var $p = $(this);
+      var pHtml = $p.html();
+      // Skip paragraphs already inside lists or with block elements
+      if ($p.parents('li, ol, ul, blockquote, pre').length) return;
+      if ($p.find('img, table, pre, blockquote, ul, ol, h1, h2, h3, h4, h5, h6').length) return;
+
+      // Detect inline list pattern: at least 2 " - " separators
+      var sepCount = (pHtml.match(/ - /g) || []).length;
+      if (sepCount < 2) return;
+
+      // Also ensure there are no HTML tags wrapping these items (pure text + separators)
+      var plain = $p.text();
+      var plainSepCount = (plain.match(/ - /g) || []).length;
+      if (plainSepCount < 2) return;
+
+      // Split by " - " and build a list
+      var items = plain.split(' - ');
+      if (items.length < 3) return;
+
+      var leadingText = items[0].trim();
+      var listItems = items.slice(1);
+
+      // Skip if leading text starts with a number+period (handled by fixLists)
+      if (/^\d+[.、．]/.test(leadingText)) return;
+
+      var listHtml = '';
+      if (leadingText) {
+        listHtml += '<p>' + leadingText + '</p>\n';
+      }
+      listHtml += '<ul>\n';
+      for (var j = 0; j < listItems.length; j++) {
+        listHtml += '<li>' + listItems[j].trim() + '</li>\n';
+      }
+      listHtml += '</ul>';
+
+      $p.replaceWith(listHtml);
+    });
   };
 
   // Process full markdown text to HTML

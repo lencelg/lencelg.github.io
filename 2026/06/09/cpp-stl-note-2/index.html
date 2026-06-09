@@ -303,7 +303,7 @@
 <td><span class="citation" data-cites="a">@a</span></td>
 <td>(a).operator@()</td>
 <td>operator@ (a)</td>
-<td>!std::cin calls std::cin.operator!()</td>
+<td>std::cin calls std::cin.operator!()</td>
 </tr>
 <tr>
 <td>a@b</td>
@@ -349,9 +349,12 @@ all infix operators other than = in a@b</p>
 <p>这里的思想和 rust 的<code>trait</code>的思想很像</p>
 <p>泛化指的是定义模板时的<strong>通用</strong>版本（主模板，primary
 template），适用于所有类型。</p>
-<p>特化是指针对<strong>一个或多个特定模板参数</strong>给出专门的实现 -
-全特化（Explicit Specialization）：指定所有模板参数。 - 偏特化（Partial
-Specialization）：只指定部分模板参数（仅限类模板）。</p>
+<p>特化是指针对<strong>一个或多个特定模板参数</strong>给出专门的实现</p>
+<ul>
+<li>全特化（Explicit Specialization）：指定所有模板参数。</li>
+<li>偏特化（Partial
+Specialization）：只指定部分模板参数（仅限类模板）。</li>
+</ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">Key</span>&gt; <span class="keyword">struct</span> <span class="title class_">hash</span> &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;  </span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">char</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">char</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">short</span>&gt;() &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">short</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">unsigned</span> <span class="type">short</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">unsigned</span> <span class="type">short</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">int</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">int</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">unsigned</span> <span class="type">int</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">long</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">long</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"></span><br><span class="line">STL_TEMPLATE_NULL <span class="keyword">struct</span> <span class="title class_">hash</span>&lt;<span class="type">unsigned</span> <span class="type">long</span>&gt; &#123;  </span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> x)</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;  </span><br><span class="line">&#125;;  </span><br></pre></td></tr></table></figure>
 <h1 id="allocator">allocator</h1>
 <p>侯捷老师在这里主要讲解了vs6, bc5,
@@ -361,52 +364,67 @@ gnuc2.9(<code>&lt;defalloc.h&gt;</code>)的<code>allocator</code>的实现，底
 <p>但是在<code>container</code>的思想下我们知道单个容器的大小，无需再分配的内存里面储存分配的大小</p>
 <p>后面就是介绍了gnuc 2.9 <code>&lt;stl::alloc&gt;</code></p>
 <p><strong>GCC 2.9 STL 分配器
-(<code>std::alloc</code>)</strong>核心要点： -
-<strong>两级配置器</strong>：以 <strong>128 字节</strong> 为界。 -
-<strong>第一级</strong>：大内存（&gt;128B）→ 直接调用
-<code>malloc</code>/<code>free</code>。 -
-<strong>第二级</strong>：小内存（≤128B）→ 内存池 + 自由链表管理。 -
-<strong>自由链表</strong>：16 条链表，负责大小 <strong>8, 16, … , 128
-字节</strong>（8 的倍数）的内存块。 - <strong>无 cookie
-开销</strong>：内存池从系统申请一大块，内部分配的小块无额外头部信息，极大节约内存。
-- <strong>效率高</strong>：避免频繁调用
-<code>malloc</code>，减少碎片。</p>
+(<code>std::alloc</code>)</strong>核心要点：</p>
+<ul>
+<li><strong>两级配置器</strong>：以 <strong>128 字节</strong> 为界。
+<ul>
+<li><strong>第一级</strong>：大内存（&gt;128B）→ 直接调用
+<code>malloc</code>/<code>free</code>。</li>
+<li><strong>第二级</strong>：小内存（≤128B）→ 内存池 +
+自由链表管理。</li>
+</ul></li>
+<li><strong>自由链表</strong>：16 条链表，负责大小 <strong>8, 16, … ,
+128 字节</strong>（8 的倍数）的内存块。</li>
+<li><strong>无 cookie
+开销</strong>：内存池从系统申请一大块，内部分配的小块无额外头部信息，极大节约内存。</li>
+<li><strong>效率高</strong>：避免频繁调用
+<code>malloc</code>，减少碎片。</li>
+</ul>
 <p>GCC 4.9 STL Allocator
 的默认分配器就是<code>malloc()/free()</code>的包装</p>
 <p>GCC 2.9 时代的 <code>std::alloc</code>
 的后继成为了<code>__gnu_cxx::__pool_alloc&lt;T&gt;</code></p>
 <h1 id="iterator">Iterator</h1>
-<p>迭代器通常会定义一些内嵌类型： -
-<code>iterator_category</code>：迭代器类型（如输入、输出、随机访问等）。
-- <code>value_type</code>：元素类型（例如 <code>int</code>）。 -
-<code>difference_type</code>：表示两个迭代器之间距离的类型（通常是
-<code>ptrdiff_t</code>）。 - <code>pointer</code>：指向元素的指针类型。
-- <code>reference</code>：指向元素的引用类型。</p>
+<p>迭代器通常会定义一些内嵌类型：</p>
+<ul>
+<li><code>iterator_category</code>：迭代器类型（如输入、输出、随机访问等）。</li>
+<li><code>value_type</code>：元素类型（例如 <code>int</code>）。</li>
+<li><code>difference_type</code>：表示两个迭代器之间距离的类型（通常是
+<code>ptrdiff_t</code>）。</li>
+<li><code>pointer</code>：指向元素的指针类型。</li>
+<li><code>reference</code>：指向元素的引用类型。</li>
+</ul>
 <p><code>iterator_traits</code>
 提供了<strong>统一的访问接口</strong>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">I</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">iterator_traits</span> &#123;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::iterator_category iterator_category;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::value_type value_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::difference_type difference_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::pointer pointer;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> I::reference reference;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>对于<strong>自定义迭代器类</strong>（其内部定义了上述类型），<code>iterator_traits&lt;I&gt;</code>
-直接取出这些类型。</li>
-<li>对于<strong>原生指针</strong>（如
-<code>int*</code>），标准库提供了<strong>偏特化版本</strong>：
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">iterator_traits</span>&lt;T*&gt; &#123;</span><br><span class="line">    <span class="keyword">typedef</span> random_access_iterator_tag iterator_category;</span><br><span class="line">    <span class="keyword">typedef</span> T value_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="type">ptrdiff_t</span> difference_type;</span><br><span class="line">    <span class="keyword">typedef</span> T* pointer;</span><br><span class="line">    <span class="keyword">typedef</span> T&amp; reference;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure> 这样，<code>iterator_traits&lt;int*&gt;::value_type</code>
-就是 <code>int</code>，无需指针自己定义类型。</li>
+<li><p>对于<strong>自定义迭代器类</strong>（其内部定义了上述类型），<code>iterator_traits&lt;I&gt;</code>
+直接取出这些类型。</p></li>
+<li><p>对于<strong>原生指针</strong>（如
+<code>int*</code>），标准库提供了<strong>偏特化版本</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">iterator_traits</span>&lt;T*&gt; &#123;</span><br><span class="line">    <span class="keyword">typedef</span> random_access_iterator_tag iterator_category;</span><br><span class="line">    <span class="keyword">typedef</span> T value_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="type">ptrdiff_t</span> difference_type;</span><br><span class="line">    <span class="keyword">typedef</span> T* pointer;</span><br><span class="line">    <span class="keyword">typedef</span> T&amp; reference;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样，<code>iterator_traits&lt;int*&gt;::value_type</code> 就是
+<code>int</code>，无需指针自己定义类型。</p></li>
 </ul>
-<p>iterator_category分为五大类 - <strong>输入迭代器 (Input
+<p>iterator_category分为五大类</p>
+<ul>
+<li><strong>输入迭代器 (Input
 Iterator)</strong>：这种迭代器所指的对象，不允许外界改变。只读（read
-only）。 - <strong>输出迭代器 (Output Iterator)</strong>：唯写（write
-only）。 - <strong>前向迭代器 (Forward
+only）。</li>
+<li><strong>输出迭代器 (Output Iterator)</strong>：唯写（write
+only）。</li>
+<li><strong>前向迭代器 (Forward
 Iterator)</strong>：允许“写入型”算法（例如
-<code>replace()</code>）在此种迭代器所形成的区间上进行读写操作。 -
-<strong>双向迭代器 (Bidirectional
-Iterator)</strong>：可双向移动。某些算法需要逆向走访某个迭代器区间（例如逆向拷贝某范围内的元素），可以使用双向迭代器。
-- <strong>随机访问迭代器 (Random Access
+<code>replace()</code>）在此种迭代器所形成的区间上进行读写操作。</li>
+<li><strong>双向迭代器 (Bidirectional
+Iterator)</strong>：可双向移动。某些算法需要逆向走访某个迭代器区间（例如逆向拷贝某范围内的元素），可以使用双向迭代器。</li>
+<li><strong>随机访问迭代器 (Random Access
 Iterator)</strong>：前四种迭代器都只供应一部分指针算术能力（前三种支持
 <code>operator++</code>，第四种再加上
 <code>operator--</code>），第五种则涵盖所有指针算术能力，包括
 <code>p+n</code>, <code>p-n</code>, <code>p[n]</code>,
-<code>p1-p2</code>, <code>p1&lt;p2</code>。</p>
+<code>p1-p2</code>, <code>p1&lt;p2</code>。</li>
+</ul>
 <p>从属关系如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Input Iterator        Output Iterator</span><br><span class="line">    │                      │</span><br><span class="line">    └──────────┬───────────┘</span><br><span class="line">               ▼</span><br><span class="line">        Forward Iterator</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">      Bidirectional Iterator</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">     Random Access Iterator</span><br></pre></td></tr></table></figure>
 
