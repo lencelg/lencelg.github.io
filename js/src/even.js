@@ -483,193 +483,199 @@
   // Markdown rendering for post content
   // Only runs when Hexo's renderer clearly did NOT process the content
   // (i.e., content is raw text with markdown syntax visible)
+  // Markdown rendering: process each <p> element individually
+  // Converts unprocessed markdown (headings, lists, bold, code) in paragraphs
   Even.prototype.renderMarkdown = function () {
     var self = this;
     var $content = $('.post-content');
     if (!$content.length) return;
 
-    var html = $content.html();
-    if (!html) return;
+    var $paragraphs = $content.find('p');
+    if (!$paragraphs.length) return;
 
-    // Count significant HTML elements — if there are many, the content
-    // was already rendered by Hexo's markdown engine, leave it alone.
-    var tagCount = (html.match(/<\/(p|ul|ol|li|h[1-6]|blockquote|pre|code|strong|em|a|img|table)\b/gi) || []).length;
+    var hasChanges = false;
 
-    // Check the TEXT content for visible markdown syntax
-    var text = $content.text();
-    var hasMarkdown = false;
-    hasMarkdown = hasMarkdown || /\*{2}[^*]+\*{2}/.test(text);   // **bold**
-    hasMarkdown = hasMarkdown || /`[^`\n]+`/.test(text);          // `code`
-    hasMarkdown = hasMarkdown || /^[-*]\s/m.test(text);           // - list
-    hasMarkdown = hasMarkdown || /^\d+[.、．]\s/m.test(text);     // 1. list
-    hasMarkdown = hasMarkdown || /^#{1,6}\s/m.test(text);         // # heading
-
-    if (!hasMarkdown) return;
-
-    if (tagCount < 3) {
-      // Content is raw markdown — convert the whole thing to HTML
-      var processed = self._processMarkdown(text);
-      if (processed && processed.length > 10) {
-        $content.html(processed);
-      }
-      return;
-    }
-
-    // Content has HTML but individual paragraphs may still have
-    // unprocessed inline list patterns like " - item1 - item2 - item3"
-    $content.find('p').each(function () {
-      var $p = $(this);
-      var pHtml = $p.html();
-      // Skip paragraphs already inside lists or with block elements
-      if ($p.parents('li, ol, ul, blockquote, pre').length) return;
-      if ($p.find('img, table, pre, blockquote, ul, ol, h1, h2, h3, h4, h5, h6').length) return;
-
-      // Detect inline list pattern: at least 2 " - " separators
-      var sepCount = (pHtml.match(/ - /g) || []).length;
-      if (sepCount < 2) return;
-
-      // Also ensure there are no HTML tags wrapping these items (pure text + separators)
-      var plain = $p.text();
-      var plainSepCount = (plain.match(/ - /g) || []).length;
-      if (plainSepCount < 2) return;
-
-      // Split by " - " and build a list
-      var items = plain.split(' - ');
-      if (items.length < 3) return;
-
-      var leadingText = items[0].trim();
-      var listItems = items.slice(1);
-
-      // Skip if leading text starts with a number+period (handled by fixLists)
-      if (/^\d+[.、．]/.test(leadingText)) return;
-
-      var listHtml = '';
-      if (leadingText) {
-        listHtml += '<p>' + leadingText + '</p>\n';
-      }
-      listHtml += '<ul>\n';
-      for (var j = 0; j < listItems.length; j++) {
-        listHtml += '<li>' + listItems[j].trim() + '</li>\n';
-      }
-      listHtml += '</ul>';
-
-      $p.replaceWith(listHtml);
-    });
-  };
-
-  // Process full markdown text to HTML
-  Even.prototype._processMarkdown = function (text) {
-    var self = this;
-    var lines = text.split('\n');
-    var result = [];
+    // Process paragraphs in order, grouping consecutive list items
     var i = 0;
+    while (i < $paragraphs.length) {
+      var $p = $paragraphs.eq(i);
+      if ($p.parents('li, ol, ul, blockquote, pre, code').length) { i++; continue; }
+      if ($p.find('pre, code, strong, em, a, img, table, blockquote, ul, ol, h1, h2, h3, h4, h5, h6').length) { i++; continue; }
 
-    while (i < lines.length) {
-      var line = lines[i];
-      var trimmed = line.trim();
+      var plain = $p.text().trim();
+      if (!plain) { i++; continue; }
 
-      // Skip completely empty lines
-      if (!trimmed) { i++; continue; }
-
-      // --- Unordered list ---
-      if (trimmed.match(/^[-*]\s/)) {
-        var items = [];
-        while (i < lines.length) {
-          var m = lines[i].trim().match(/^[-*]\s+(.*)/);
-          if (!m) {
-            // Allow indented continuation line
-            var nt = lines[i].trim();
-            if (nt && !nt.match(/^[-*\d#>]/) && items.length > 0) {
-              items[items.length - 1] += ' ' + self._processInlineMarkdown(nt);
-              i++; continue;
-            }
-            break;
-          }
-          items.push(self._processInlineMarkdown(m[1]));
-          i++;
-        }
-        if (items.length > 0) {
-          result.push('<ul>\n<li>' + items.join('</li>\n<li>') + '</li>\n</ul>');
-        }
-        continue;
-      }
-
-      // --- Ordered list ---
-      if (trimmed.match(/^\d+[.、．]\s/)) {
-        var olItems = [];
-        while (i < lines.length) {
-          var om = lines[i].trim().match(/^(\d+)[.、．]\s+(.*)/);
-          if (!om) {
-            var nt2 = lines[i].trim();
-            if (nt2 && !nt2.match(/^[-*\d#>]/) && olItems.length > 0) {
-              olItems[olItems.length - 1] += ' ' + self._processInlineMarkdown(nt2);
-              i++; continue;
-            }
-            break;
-          }
-          olItems.push(self._processInlineMarkdown(om[2]));
-          i++;
-        }
-        if (olItems.length > 0) {
-          result.push('<ol>\n<li>' + olItems.join('</li>\n<li>') + '</li>\n</ol>');
-        }
-        continue;
-      }
-
-      // --- Heading ---
-      var headingMatch = trimmed.match(/^(#{1,6})\s+(.*)/);
+      // --- Heading detection: lines starting with # ---
+      var headingMatch = plain.match(/^(#{1,6})\s+(.+)/);
       if (headingMatch) {
         var level = headingMatch[1].length;
-        result.push('<h' + level + '>' + self._processInlineMarkdown(headingMatch[2]) + '</h' + level + '>');
-        i++; continue;
-      }
-
-      // --- Blockquote ---
-      var bqMatch = trimmed.match(/^>\s?(.*)/);
-      if (bqMatch) {
-        var bqLines = [];
-        while (i < lines.length) {
-          var bqm = lines[i].trim().match(/^>\s?(.*)/);
-          if (!bqm) break;
-          bqLines.push(bqm[1]);
-          i++;
-        }
-        var bqHtml = self._processMarkdown(bqLines.join('\n'));
-        result.push('<blockquote>\n' + bqHtml + '\n</blockquote>');
+        var headingText = self._processInline(headingMatch[2]);
+        var headingId = self._slugify(headingText);
+        $p.replaceWith('<h' + level + ' id="' + headingId + '">' + headingText + '</h' + level + '>');
+        hasChanges = true;
+        i++;
         continue;
       }
 
-      // --- Regular paragraph ---
-      var paraLines = [];
-      while (i < lines.length) {
-        var nl = lines[i];
-        var nt3 = nl.trim();
-        if (!nt3) break;
-        if (nt3.match(/^[-*]\s/)) break;
-        if (nt3.match(/^\d+[.、．]\s/)) break;
-        if (nt3.match(/^#{1,6}\s/)) break;
-        if (nt3.match(/^>\s?/)) break;
-        paraLines.push(nl);
+      // --- Inline list: "prefix - item1 - item2 - item3" ---
+      var sepCount = (plain.match(/ - /g) || []).length;
+      if (sepCount >= 2 && plain.split(' - ').length >= 3) {
+        var items = plain.split(' - ');
+        var leading = items[0].trim();
+        var listItems = items.slice(1);
+
+        // Don't handle if it looks like a numbered list (fixLists handles those)
+        if (/^\d+[.、．]/.test(leading)) { i++; continue; }
+
+        var listHtml = '';
+        if (leading) {
+          listHtml += '<p>' + leading + '</p>\n';
+        }
+        listHtml += '<ul>\n';
+        for (var li = 0; li < listItems.length; li++) {
+          listHtml += '<li>' + listItems[li].trim() + '</li>\n';
+        }
+        listHtml += '</ul>';
+        $p.replaceWith(listHtml);
+        i++;
+        continue;
+      }
+
+      // --- Inline formatting: **bold**, `code`, *italic*, [links] ---
+      var processed = self._processInline(plain);
+      if (processed !== plain) {
+        $p.html(processed);
+      }
+
+      i++;
+    }
+
+    // Group consecutive <p> that start with "- " into <ul> blocks
+    // (handles the case where each list item is a separate <p>)
+    $paragraphs = $content.find('p');
+    i = 0;
+    while (i < $paragraphs.length) {
+      var $p2 = $paragraphs.eq(i);
+      if ($p2.parents('li, ol, ul, blockquote, pre, code').length) { i++; continue; }
+      var plain2 = $p2.text().trim();
+      var isItem = plain2.match(/^[-*]\s+(.+)/);
+      if (!isItem) { i++; continue; }
+
+      // Found a list item — gather consecutive items
+      var items2 = [isItem[1]];
+      var $firstItem = $p2;
+      i++;
+
+      while (i < $paragraphs.length) {
+        var $next = $paragraphs.eq(i);
+        if ($next.parents('li, ol, ul, blockquote, pre, code').length) break;
+        var nextText = $next.text().trim();
+        var nextMatch = nextText.match(/^[-*]\s+(.+)/);
+        if (!nextMatch) break;
+        items2.push(nextMatch[1]);
+        $next.remove();
         i++;
       }
-      if (paraLines.length > 0) {
-        result.push('<p>' + self._processInlineMarkdown(paraLines.join(' ').trim()) + '</p>');
-      } else {
-        i++;
+
+      if (items2.length > 0) {
+        var ulHtml = '<ul>\n';
+        for (var li2 = 0; li2 < items2.length; li2++) {
+          ulHtml += '<li>' + self._processInline(items2[li2]) + '</li>\n';
+        }
+        ulHtml += '</ul>';
+        $firstItem.replaceWith(ulHtml);
+        hasChanges = true;
       }
     }
 
-    return result.join('\n');
+    // If we created new headings, rebuild the TOC
+    if (hasChanges && self.config.toc) {
+      self._rebuildToc($content);
+    }
   };
 
-  // Process inline markdown: bold, italic, code, links, images
-  Even.prototype._processInlineMarkdown = function (text) {
+  // Generate a URL-friendly ID from heading text
+  Even.prototype._slugify = function (text) {
+    return text
+      .toLowerCase()
+      .replace(/<[^>]+>/g, '')
+      .replace(/[^\w\u4e00-\u9fff\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      || 'heading';
+  };
+
+  // Rebuild Table of Contents from all headings in post content
+  Even.prototype._rebuildToc = function ($content) {
+    var $toc = $('.post-toc-content');
+    if (!$toc.length) return;
+
+    var headings = [];
+    $content.find('h1, h2, h3, h4, h5, h6').each(function () {
+      var $h = $(this);
+      var text = $h.text().trim();
+      var id = $h.attr('id');
+      var level = parseInt(this.tagName.charAt(1));
+      if (!id) {
+        id = 'heading-' + headings.length;
+        $h.attr('id', id);
+      }
+      if (text) {
+        headings.push({ text: text, id: id, level: level });
+      }
+    });
+
+    if (!headings.length) return;
+
+    // Build nested TOC HTML (respect heading hierarchy)
+    var html = this._buildTocTree(headings, 1);
+    $toc.html(html);
+  };
+
+  // Build nested TOC list from flat heading array
+  Even.prototype._buildTocTree = function (headings, minLevel) {
+    if (!headings.length) return '';
+    var html = '<ol class="toc">\n';
+    var i = 0;
+    while (i < headings.length) {
+      var h = headings[i];
+      if (h.level < minLevel) { i++; continue; }
+      if (h.level > minLevel) {
+        // Collect child headings for deeper nesting
+        var children = [];
+        while (i < headings.length && headings[i].level > minLevel) {
+          children.push(headings[i]);
+          i++;
+        }
+        html += this._buildTocTree(children, minLevel + 1);
+        continue;
+      }
+      html += '<li class="toc-item toc-level-' + h.level + '">\n';
+      html += '<a class="toc-link" href="#' + h.id + '">\n';
+      html += '<span class="toc-text">' + h.text + '</span>\n';
+      html += '</a>\n';
+      i++;
+      // Check for child headings
+      var childItems = [];
+      while (i < headings.length && headings[i].level > h.level) {
+        childItems.push(headings[i]);
+        i++;
+      }
+      if (childItems.length > 0) {
+        html += this._buildTocTree(childItems, h.level + 1);
+      }
+      html += '</li>\n';
+    }
+    html += '</ol>\n';
+    return html;
+  };
+
+  // Process inline markdown: bold, italic, code, links
+  Even.prototype._processInline = function (text) {
     if (!text) return '';
 
-    // First, protect any existing HTML-like entities
-    // Then apply markdown rules
-
-    // Inline code: `code` (process first, before bold/italic)
+    // Inline code: `code`
     text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
 
     // Bold: **text** or __text__
@@ -677,17 +683,22 @@
     text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
 
     // Italic: *text* or _text_
-    text = text.replace(/(\W|^)\*([^*]+)\*(\W|$)/g, '$1<em>$2</em>$3');
-    text = text.replace(/(\W|^)_([^_]+)_(\W|$)/g, '$1<em>$2</em>$3');
-
-    // Images: ![alt](url)
-    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+    text = text.replace(/(?:^|[^*\w])\*([^*]+)\*(?:[^*\w]|$)/g, function(m, g1) {
+      var pre = m.charAt(0) === '*' ? '' : m.charAt(0);
+      var post = m.charAt(m.length - 1) === '*' ? '' : m.charAt(m.length - 1);
+      return pre + '<em>' + g1 + '</em>' + post;
+    });
 
     // Links: [text](url)
     text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
+    // Images: ![alt](url)
+    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+
     return text;
   };
+
+  // Fix unrendered lists: some markdown renderers don't recognize numbered lists
 
   // Copy code button for code blocks
   Even.prototype.copyCode = function () {
