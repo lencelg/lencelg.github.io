@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>
+    (function(){var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+    document.documentElement.setAttribute('data-theme',t);})();
+  </script>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5f5" />
+<meta name="msapplication-navbutton-color" content="#f8f5f5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5f5">
+
+<!-- Website description -->
+
+<meta name="description" content="thinking" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="thinking, lencelg&#39;s blog" />
+
+
+
+
+<!-- Website rss -->
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/lencelg/favicon.ico?v=3.0.2" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="http://github.com/lencelg/2026/10/28/thinking/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lencelg/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- LaTeX support: renderer is selectable via theme.latex_renderer -->
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false},{left: '\\[', right: '\\]', display: true}]});"></script>
+
+
+
+<!-- Mermaid diagram support: mermaid v11 injects its own styles at runtime,
+     and the package ships no standalone stylesheet -->
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/lencelg/css/style.css?v=3.0.2" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null,"server_url":null,"cdn":null},"toc":true,"fancybox":true,"latex":true,"latex_renderer":"katex","katex":{"enable":true,"autoRender":true},"mermaid":{"enable":true,"theme":"default"}};
+</script>
+  
+  <title>thinking - lencelg&#39;s blog</title>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/lencelg/." class="logo">lencelg&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <button id="theme-toggle-mobile" class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/lencelg/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/lencelg/archives/">
+      <li class="mobile-menu-item">
+        
+        
+        Archives              </li>
+    </a>
+    
+    <a href="/lencelg/tags/">
+      <li class="mobile-menu-item">
+        
+        
+        Tags              </li>
+    </a>
+    
+    <a href="/lencelg/categories/">
+      <li class="mobile-menu-item">
+        
+        
+        Categories              </li>
+    </a>
+    
+    <a href="/lencelg/about/">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/lencelg/." class="logo">lencelg's blog</a>  
+</div>  
+  
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/lencelg/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/lencelg/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/lencelg/tags/">
+            
+            
+              Tags
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/lencelg/categories/">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/lencelg/about/">
+            
+            
+              About
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      thinking
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2026-10-28
+      </span>
+      
+      
+      <span class="post-category">
+        
+        <a href="/lencelg/categories/thinking/">thinking</a>
+        
+      </span>
+      
+      
+      
+      <span class="post-reading-time">
+        2 min
+      </span>
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#thinking"><span class="toc-number">1.</span> <span class="toc-text">thinking</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%93%E5%88%B6%E5%8C%96%E7%9A%84%E6%82%B2%E5%93%80"><span class="toc-number">2.</span> <span class="toc-text">体制化的悲哀</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E5%BF%B5"><span class="toc-number">3.</span> <span class="toc-text">信念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%84%8F%E4%B9%89"><span class="toc-number">4.</span> <span class="toc-text">意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E7%94%B1%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">自由？</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h1 id="thinking"><a href="#thinking" class="headerlink" title="thinking"></a>thinking</h1><p>今天的os课老师花了一节课来分享《肖申克的救赎》这部电影对于现在时代的思考。</p>
+<p>其中有几点触动较深</p>
+<h1 id="体制化的悲哀"><a href="#体制化的悲哀" class="headerlink" title="体制化的悲哀"></a>体制化的悲哀</h1><p>影片里瑞德说</p>
+<blockquote>
+<p>「這些圍牆很奇怪，剛開始你會恨它，慢慢地你會習慣它，日子久了，你就會發現自己離不开它了，這就是被體制化了。」</p>
+</blockquote>
+<p>一个人在稳定的舒适圈里面待久了，思考就变少了，久而久之就习惯了无须太多变化的生活方式,<br>随着而来就是固化(最后慢慢演变成了一种依赖).</p>
+<p>囚犯布鲁克斯出狱后无法适应社会而自尽，以及瑞德险些重蹈覆辙,<br>这些都是体制化的悲哀</p>
+<p>试想如果在已经体制化的生活里面中年失业,<br>还能从头再来吗？这无疑很难，社会竞争等等因素集合在一起,<br>无疑是对个体的很大的冲击。(失去了很多东西)</p>
+<p>正如布鲁克斯在监狱里面是受人尊敬的长者，出狱后与社会脱节，失去了在体制内所拥有的东西，失去所有的信念最后悬梁自尽。</p>
+<h1 id="信念"><a href="#信念" class="headerlink" title="信念"></a>信念</h1><p>安迪日复一日的挖通道最后逃出升天，重获自由。</p>
+<p>安迪没有在体制化的生活里面失去对自由的信念，反而是最后成为逃出监狱的人.</p>
+<p>当然安迪的离去对体制化的瑞德带来了冲击，这对后面的结局产生了铺垫</p>
+<p>对于信念的理解，我个人理解是算是有点类似与自己真正想做的，自己所追求的意义</p>
+<h1 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h1><p>最后我还是没有能逃离对意义的讨论。</p>
+<p>意义到底是什么？每个人也许都有自己的解释<br>但我感觉这是只能意会不能言传的。</p>
+<p>人生活着是为了什么？这是一个笔者很难回答得清楚的问题。</p>
+<p>活着至少需要一个理由，一个自己认可的理由，如果没有的话，那就去寻找这个理由吧。</p>
+<h1 id="自由？"><a href="#自由？" class="headerlink" title="自由？"></a>自由？</h1><p>影片的最后瑞德与安迪在海边相遇，蓝天白云，海风吹拂，这是自由的气息。</p>
+<p><img src="/lencelg/images/thinking/freedom.webp" alt="freedom"></p>
+<p>在现实的重压下，我们也能有自己的<strong>自由</strong>吗？</p>
+<p><strong>那种自由会是梦吗？</strong></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="http://github.com/lencelg">lencelg from Arcadia Bay</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="http://github.com/lencelg/2026/10/28/thinking/">http://github.com/lencelg/2026/10/28/thinking/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/lencelg/tags/thinking/">thinking</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:2223544759@qq.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a href="https://github.com/lencelg" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+</div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" href="https://github.com/lencelg/even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2026      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">lencelg from Arcadia Bay</span>
+  </span>
+
+</div>
+
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+  
+
+  
+
+
+<script type="text/javascript" src="/lencelg/lib/jquery/jquery.min.js"></script>
+
+<script type="text/javascript" src="/lencelg/lib/slideout/slideout.js"></script>
+
+<script type="text/javascript" src="/lencelg/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<!-- Mermaid diagram support -->
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true },
+    sequence: { useMaxWidth: true },
+    gantt: { useMaxWidth: true }
+  });
+</script>
+
+
+  <script type="text/javascript" src="/lencelg/js/src/even.js?v=3.0.2"></script>
+</body>
+
+</html>
